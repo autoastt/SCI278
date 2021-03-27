@@ -57,6 +57,16 @@ void show(char brd[SIZE+2][SIZE+2],int mask)
                     SetConsoleTextAttribute(h,red | inten );
                     printf(" %c ",brd[i][k]);
                 }
+                else if(brd[i][k]=='A')
+                {
+                    SetConsoleTextAttribute(h,blue | green | inten);
+                    printf(" %c ",brd[i][k]);
+                }
+                else if(brd[i][k]=='c')
+                {
+                    SetConsoleTextAttribute(h,inten | red | green);
+                    printf(" %c ",brd[i][k]);
+                }
                 else
                 {
                     SetConsoleTextAttribute(h, normal);
@@ -69,10 +79,10 @@ void show(char brd[SIZE+2][SIZE+2],int mask)
 }
 void spawn(char brd[SIZE+2][SIZE+2],int k,int level)
 {
-    int poM_x, poM_y,r;
+    int poM_x, poM_y,r,u=0;
     srand(time(0));
     r=rand();
-    for(int i=0;i<k;i++)
+    for(int i=0;i<k;i++,u++)
     {
         poM_x=rand()%25,r;
         poM_y=rand()%25;
@@ -97,6 +107,36 @@ void spawn(char brd[SIZE+2][SIZE+2],int k,int level)
                 }
         }
         else i--;
+        if(u>=700) break;
+    }
+}
+int check_coin(char brd[SIZE+2][SIZE+2])
+{
+    for(int i=0;i<SIZE+2;i++)
+    {
+        for(int j=0;j<SIZE+2;j++)
+        {
+            if(brd[i][j]=='c')
+            {
+                return 999;
+            }
+        }
+    }
+    return 0;
+}
+void spcoin(char brd[SIZE+2][SIZE+2])
+{
+    int poc_x, poc_y,r;
+    srand(time(0));
+    while(1)
+    {
+        poc_x=rand()%25;
+        poc_y=rand()%25;
+        if(brd[poc_x][poc_y]==' ')
+        {
+            brd[poc_x][poc_y]='c';
+            break;
+        }
     }
 }
 int main()
@@ -107,7 +147,7 @@ int main()
     GetConsoleScreenBufferInfo(h,&csbiInfo);
     normal=csbiInfo.wAttributes;
     char x, brd[SIZE+2][SIZE+2], leve[10];
-    int level, c=1, cb=1, turn=1, po_x=0, po_y=0, mask=0, alcohol=0;
+    int level, c=1, cb=1, turn=1, po_x=0, po_y=0, mask=0, alcohol=0, score=0;
     printf("1.EASY\n2.NORMAL\n3.HARD\n");
     //level=getche();
     scanf("%d",&level);//input level
@@ -135,25 +175,34 @@ int main()
     }
     printf("Mode: %s  ",leve);
     SetConsoleTextAttribute(h,inten | red | green);
-    printf("Turn: 0  ");
+    printf("Score: 0  ");
     SetConsoleTextAttribute(h,inten | red | blue | green);
-    printf("Mask: %d  ",mask);
+    printf("Mask:       ",mask);
     SetConsoleTextAttribute(h,inten | blue | green);
     printf("Alcohol: %d\n",alcohol);
     SetConsoleTextAttribute(h,normal);
+    if(check_coin(brd)==0) spcoin(brd);
     show(brd,mask);
     while(c!=69&&cb!=69)//play
     {
         srand(time(0));
         x=getche(); //input turn
-        c=play(SIZE,brd,x,po_x,po_y,&mask,&alcohol);
+        if(x!=32){
+        c=play(SIZE,brd,x,po_x,po_y,&mask,&alcohol,&score);
         cb=botplay(SIZE,brd,&mask);
+        turn++;
+        }
         system("cls");
         printf("Mode: %s  ",leve);
         SetConsoleTextAttribute(h,inten | red | green);
-        printf("Turn: %d  ",turn);
+        printf("score: %d  ",score);
         SetConsoleTextAttribute(h,inten | red | blue | green);
-        printf("Mask: %d  ",mask);
+        printf("Mask:");
+        printf("%.*s",mask*2," m m m");
+        if(mask==1) printf("      ");
+        else if(mask==2) printf("   ");
+        else if(mask==3) printf(" ");
+        else if(mask==0) printf("       ");
         SetConsoleTextAttribute(h,inten | blue | green);
         printf("Alcohol: %d\n",alcohol);
         SetConsoleTextAttribute(h,normal);
@@ -162,8 +211,8 @@ int main()
             alcohol_use(SIZE,brd,po_x,po_y,mask);
             alcohol--;
         }
+        if(check_coin(brd)==0) spcoin(brd);
         show(brd,mask);
-        turn++;
         for(int i=0;i<SIZE+2;i++)//find position of P
         {
             for(int j=0;j<SIZE+2;j++)
@@ -182,6 +231,6 @@ int main()
     }
     system("color FC");
     printf("YOU ARE INFECTED\nYOU HAVE SURVIVED FOR %d TURN",turn-1);
-    Beep(300,3000);
+    Beep(300,2000);
     return 0;
 }

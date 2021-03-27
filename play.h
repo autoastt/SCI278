@@ -1,5 +1,5 @@
 //  #include<stdio.h>
-int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, int *alcohol)
+int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, int *alcohol, int *score)
 {
     //printf("%d %d",mask,&mask);
     if(x=='w')
@@ -33,6 +33,13 @@ int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, in
             brd[po_x-1][po_y]='I';
             return 798;
         }
+        else if(brd[po_x-1][po_y]=='c')
+        {
+            Beep(850,300);
+            (*score)++;
+            brd[po_x][po_y]=' ';
+            brd[po_x-1][po_y]='I';
+        }
     }
     else if(x=='s')
     {
@@ -64,6 +71,13 @@ int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, in
             brd[po_x][po_y]=' ';
             brd[po_x+1][po_y]='I';
             return 798;
+        }
+        else if(brd[po_x+1][po_y]=='c')
+        {
+            Beep(850,300);
+            (*score)++;
+            brd[po_x][po_y]=' ';
+            brd[po_x+1][po_y]='I';
         }
     }
     else if(x=='d')
@@ -97,6 +111,13 @@ int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, in
             brd[po_x][po_y+1]='I';
             return 798;
         }
+        else if(brd[po_x][po_y+1]=='c')
+        {
+            Beep(850,300);
+            (*score)++;
+            brd[po_x][po_y]=' ';
+            brd[po_x][po_y+1]='I';
+        }
     }
     else if(x=='a')
     {
@@ -128,6 +149,13 @@ int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, in
             brd[po_x][po_y]=' ';
             brd[po_x][po_y-1]='I';
             return 798;
+        }
+        else if(brd[po_x][po_y-1]=='c')
+        {
+            Beep(850,300);
+            (*score)++;
+            brd[po_x][po_y]=' ';
+            brd[po_x][po_y-1]='I';
         }
     }
     return 1;
