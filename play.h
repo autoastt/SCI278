@@ -1,280 +1,58 @@
-//  #include<stdio.h>
-int play(int SIZE, char brd[][SIZE+2], char x, int po_x, int po_y, int *mask, int *alcohol, int *score)
+void createboard (int SIZE, int level, char brd[][SIZE+2])
 {
-    //printf("%d %d",mask,&mask);
-    if(x=='w')
-    {
-        if(brd[po_x-1][po_y]==' ')
-        {
-            brd[po_x][po_y]=' ';
-            brd[po_x-1][po_y]='I';
-        }
-        else if(brd[po_x-1][po_y]=='V')
-        {
-            if((*mask)>0)
-            {
-                (*mask)--;
-                Beep(300,300);
-                return 1;
-            }
-            else return 69;
-        }
-        else if(brd[po_x-1][po_y]=='m')
-        {
-            (*mask)=3;
-            brd[po_x][po_y]=' ';
-            brd[po_x-1][po_y]='I';
-            return 420;
-        }
-        else if(brd[po_x-1][po_y]=='A')
-        {
-            (*alcohol)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x-1][po_y]='I';
-            return 798;
-        }
-        else if(brd[po_x-1][po_y]=='c')
-        {
-            Beep(850,300);
-            (*score)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x-1][po_y]='I';
-        }
-    }
-    else if(x=='s')
-    {
-        if(brd[po_x+1][po_y]==' ')
-        {
-            brd[po_x][po_y]=' ';
-            brd[po_x+1][po_y]='I';
-        }
-        else if(brd[po_x+1][po_y]=='V')
-        {
-            if((*mask)>0)
-            {
-                Beep(300,300);
-                (*mask)--;
-                return 1;
-            }
-            else return 69;
-        }
-        else if(brd[po_x+1][po_y]=='m')
-        {
-            (*mask)=3;
-            brd[po_x][po_y]=' ';
-            brd[po_x+1][po_y]='I';
-            return 420;
-        }
-        else if(brd[po_x+1][po_y]=='A')
-        {
-            (*alcohol)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x+1][po_y]='I';
-            return 798;
-        }
-        else if(brd[po_x+1][po_y]=='c')
-        {
-            Beep(850,300);
-            (*score)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x+1][po_y]='I';
-        }
-    }
-    else if(x=='d')
-    {
-        if(brd[po_x][po_y+1]==' ')
-        {
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y+1]='I';
-        }
-        else if(brd[po_x][po_y+1]=='V')
-        {
-            if((*mask)>0)
-            {
-                Beep(300,300);
-                (*mask)--;
-                return 1;
-            }
-            else return 69;
-        }
-        else if(brd[po_x][po_y+1]=='m')
-        {
-            (*mask)=3;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y+1]='I';
-            return 420;
-        }
-        else if(brd[po_x][po_y+1]=='A')
-        {
-            (*alcohol)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y+1]='I';
-            return 798;
-        }
-        else if(brd[po_x][po_y+1]=='c')
-        {
-            Beep(850,300);
-            (*score)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y+1]='I';
-        }
-    }
-    else if(x=='a')
-    {
-        if(brd[po_x][po_y-1]==' ')
-        {
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y-1]='I';
-        }
-        else if(brd[po_x][po_y-1]=='V')
-        {
-            if((*mask)>0)
-            {
-                Beep(300,300);
-                (*mask)--;
-                return 1;
-            }
-            else return 69;
-        }
-        else if(brd[po_x][po_y-1]=='m')
-        {
-            (*mask)=3;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y-1]='I';
-            return 420;
-        }
-        else if(brd[po_x][po_y-1]=='A')
-        {
-            (*alcohol)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y-1]='I';
-            return 798;
-        }
-        else if(brd[po_x][po_y-1]=='c')
-        {
-            Beep(850,300);
-            (*score)++;
-            brd[po_x][po_y]=' ';
-            brd[po_x][po_y-1]='I';
-        }
-    }
-    return 1;
-}
-int botplay(int SIZE, char brd[][SIZE+2],int *mask)
-{
-    int w;
+    srand(time(0));
+    int t2,t3;
     for(int i=0;i<SIZE+2;i++)
     {
         for(int j=0;j<SIZE+2;j++)
-        {
-            if(brd[i][j]=='M')// if bot is M
             {
-                w=rand()%5;
                 brd[i][j]=' ';
-                if(w==1&&(brd[i+1][j]==' '))
-                {
-                    brd[i+1][j]='M';
-                }
-                else if(w==2&&(brd[i-1][j]==' '))
-                {
-                    brd[i-1][j]='M';
-                }
-                else if(w==3&&(brd[i][j+1]==' '))
-                {
-                    brd[i][j+1]='M';
-                }
-                else if(w==4&&(brd[i][j-1]==' '))
-                {
-                    brd[i][j-1]='M';
-                }
-                else// if bot is V
-                {
-                    if(w==1&&(brd[i+1][j]=='V')) brd[i][j]='V';
-                    else if(w==2&&(brd[i-1][j]=='V')) brd[i][j]='V';
-                    else if(w==3&&(brd[i][j+1]=='V')) brd[i][j]='V';
-                    else if(w==4&&(brd[i][j-1]=='V')) brd[i][j]='V';
-                    else brd[i][j]='M';
-                }
+                if(i==0) brd[0][j]='-';
+                else if(j==0) brd[i][0]='|';
+                else if(i==SIZE+1) brd[SIZE+1][j]='-';
+                else if(j==SIZE+1) brd[i][SIZE+1]='|' ;
             }
-            if(brd[i][j]=='V')// V hit I
-            {
-                w=rand()%5;
-                brd[i][j]=' ';
-                if(w==1&&((brd[i+1][j]==' ')||brd[i+1][j]=='P'))
-                {
-
-                    if(brd[i+1][j]=='P')
-                    {
-                        if((*mask)>0){
-                            (*mask)--;
-                            brd[i][j]='V';
-                            return 1;
-                        }
-                        else{
-                            brd[i+1][j]='V';
-                            return 69;
-                        }
-                    }
-                    else brd[i+1][j]='V';
-                }
-                else if(w==2&&((brd[i-1][j]==' ')||brd[i-1][j]=='P'))
-                {
-                    if(brd[i-1][j]=='P')
-                    {
-                        if((*mask)>0){
-                            (*mask)--;
-                            brd[i][j]='V';
-                            return 1;
-                        }
-                        else{
-                            brd[i-1][j]='V';
-                            return 69;
-                        }
-                    }
-                    else brd[i-1][j]='V';
-                }
-                else if(w==3&&((brd[i][j+1]==' ')||brd[i][j+1]=='P'))
-                {
-                    if(brd[i][j+1]=='I')
-                    {
-                        if((*mask)>0){
-                            (*mask)--;
-                            brd[i][j]='V';
-                            return 1;
-                        }
-                        else{
-                            brd[i][j+1]='V';
-                            return 69;
-                        }
-                    }
-                    else brd[i][j+1]='V';
-                }
-                else if(w==4&&((brd[i][j-1]==' ')||brd[i][j-1]=='I'))
-                {
-                    if(brd[i][j-1]=='I')
-                    {
-                        if((*mask)>0){
-                            (*mask)--;
-                            brd[i][j]='V';
-                            return 1;
-                        }
-                        else{
-                            brd[i][j-1]='V';
-                            return 69;
-                        }
-                    }
-                    else brd[i][j-1]='V';
-                }
-                else//M is infected & become V
-                {
-                    if(w==1&&(brd[i+1][j]=='M')) brd[i+1][j]='V';
-                    else if(w==2&&(brd[i-1][j]=='M')) brd[i-1][j]='V';
-                    else if(w==3&&(brd[i][j+1]=='M')) brd[i][j+1]='V';
-                    else if(w==4&&(brd[i][j-1]=='M')) brd[i][j-1]='V';
-                    else brd[i][j]='V';
-                }
-            }
-        }
     }
-}
+    brd[0][0]='O';
+    brd[0][SIZE+1]='O';
+    brd[SIZE+1][0]='O';
+    brd[SIZE+1][SIZE+1]='O';
+  if(level==1)
+    {
+        t3=4;
+        t2=7;
+    }
+  else if(level==2)
+    {
+        t3=6;
+        t2=9;
+    }
+  else if(level==3)
+    {
+        t3=8;
+        t2=11;
+    }
+    for(int i=0,k=0;i<t3;i++)//3*3 tower
+        {
+            k=rand()%(SIZE*SIZE);
+            if(brd[k%SIZE+1][k/SIZE]==' ') brd[k%SIZE+1][k/SIZE]='X';
+            if(brd[k%SIZE+2][k/SIZE]==' ') brd[k%SIZE+2][k/SIZE]='X';
+            if(brd[k%SIZE][k/SIZE]==' ') brd[k%SIZE][k/SIZE]='X';
+            if(brd[k%SIZE+1][k/SIZE+1]==' ') brd[k%SIZE+1][k/SIZE+1]='X';
+            if(brd[k%SIZE+2][k/SIZE+1]==' ') brd[k%SIZE+2][k/SIZE+1]='X';
+            if(brd[k%SIZE][k/SIZE+1]==' ') brd[k%SIZE][k/SIZE+1]='X';
+            if(brd[k%SIZE+1][k/SIZE-1]==' ') brd[k%SIZE+1][k/SIZE-1]='X';
+            if(brd[k%SIZE+2][k/SIZE-1]==' ') brd[k%SIZE+2][k/SIZE-1]='X';
+            if(brd[k%SIZE][k/SIZE-1]==' ') brd[k%SIZE][k/SIZE-1]='X';
+        }
+        for(int i=0,k=0;i<t2;i++)//2*2 tower
+        {
+            k=rand()%(SIZE*SIZE);
+            if(brd[k%SIZE+1][k/SIZE]==' ') brd[k%SIZE+1][k/SIZE]='X';
+            if(brd[k%SIZE+2][k/SIZE]==' ') brd[k%SIZE+2][k/SIZE]='X';
+            if(brd[k%SIZE+1][k/SIZE+1]==' ') brd[k%SIZE+1][k/SIZE+1]='X';
+            if(brd[k%SIZE+2][k/SIZE+1]==' ') brd[k%SIZE+2][k/SIZE+1]='X';
 
+        }
+
+}
